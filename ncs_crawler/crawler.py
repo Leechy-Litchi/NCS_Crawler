@@ -13,6 +13,8 @@ class Crawler:
         self.args = args
 
     def saveFile(self,trdict):
+        if os.path.exists(self.args.destination)==False:
+            os.mkdir(self.args.destination)
         outjson = self.args.destination+self.args.output
         with open(outjson,mode='w',encoding='utf-8') as file:
             json.dump(trdict,fp=file)
@@ -48,7 +50,7 @@ class Crawler:
                                 if "genre" in tags[0]["href"]:
                                     trdict["genres"].append(tags[0].text.replace("/","／"))
                                 else:
-                                    trdict["genres"].append("")
+                                    trdict["genres"].append("N／A")
                                 for tag in tags:
                                     if "mood" in tag["href"]:
                                         moods.append(tag.text)
@@ -69,7 +71,7 @@ class Crawler:
             return True
 
     def run(self):
-        pages = 1     
+        pages = 1
         trdict = {"filename":[],"genres":[],"moods":[],"urls":[]}   
         while pages<=self.args.end:
             if self.crawl(pages,trdict):
