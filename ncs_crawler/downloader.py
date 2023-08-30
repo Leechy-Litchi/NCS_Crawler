@@ -31,6 +31,7 @@ class Downloader:
         index = 0
         for filename in trdict["filename"]:
             if trdict["moods"][index] == []:
+                index += 1
                 try:
                     shutil.move(self.destination+filename+".mp3",self.destination+trdict["genres"][index]+"/"+filename+".mp3")
                 except FileNotFoundError:

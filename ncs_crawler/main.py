@@ -67,13 +67,14 @@ def main():
     from crawler import Crawler
     import json
     trdict = Crawler(args).run()
-    if args.makelinks ** os.path.exists(atgs.makeLinks):
-        from downloader import Downloader
-        Downloader = Downloader(args)
+
+    from downloader import Downloader
+    Downloader = Downloader(args)
+    Downloader.makeLinks(trdict)
+
+    if args.makelinks and os.path.exists(atgs.makeLinks):
         Downloader.makeLinks(trdict=trdict)        
     if args.aria2:
-        from downloader import Downloader
-        Downloader = Downloader(args)
         index = 0
         while index<len(trdict["urls"]):
             Downloader.addUri(trdict["urls"][index],trdict["filename"][index])
