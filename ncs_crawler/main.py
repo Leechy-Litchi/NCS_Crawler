@@ -21,12 +21,6 @@ def main():
         help="save urls as a file, out.json as default",
     )
     parser.add_argument(
-        "-q",
-        "--quiet",
-        help="not to print all urls in cli",
-        action=argparse.BooleanOptionalAction,
-    )    
-    parser.add_argument(
         "-a",
         "--aria2",
         help="use rpc to download",
@@ -57,23 +51,18 @@ def main():
     args = parser.parse_args()
 
     from crawler import Crawler
-    if args.quiet:
-        import contextlib
-        with contextlib.redirect_stdout(None):
-            trdict = Crawler(args).run()
-    else:
-            import time
-            import random
-            trdict = Crawler(args).run()
-            if args.aria2:
-                from downloader import Downloader
-                Downloader = Downloader(args)
-                index = 0
-                while index<len(trdict["urls"]):
-                    Downloader.request(trdict["urls"][index],args.destination,trdict["filename"][index])
-                    index += 1
-                    time.sleep(random.randint(1, 3))  
-                    break
+    import time
+    import random
+    trdict = Crawler(args).run()
+    if args.aria2:
+        from downloader import Downloader
+        Downloader = Downloader(args)
+        index = 0
+        while index<len(trdict["urls"]):
+            Downloader.request(trdict["urls"][index],args.destination,trdict["filename"][index])
+            index += 1
+            
+            
 
 
 if __name__ == "__main__":

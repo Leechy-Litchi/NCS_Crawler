@@ -11,7 +11,7 @@ class Crawler:
     def __init__(self, args):
         self.args = args
     def saveFile(self,trdict):
-        json.dump(trdict,fp=open(self.args.output,"w+"))
+        json.dump(trdict,fp=open(self.args.dest+self.args.output,"w+"))
     def run(self):
         pages = 1
         trdict = {"filename":[],"genres":[],"moods":[],"urls":[]}        
