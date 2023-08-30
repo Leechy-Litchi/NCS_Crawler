@@ -17,7 +17,7 @@ class Downloader:
         }    
         requests.post(url=self.rpc,data=json.dumps(jsonrpc))  
         if len(url)>1:
-            self.addUri([url[1]],self.destination,filename+" (Instrument)") 
+            self.addUri([url[1]],filename+" (Instrument)") 
 
     def redownload(self,trdict):
         import time
@@ -38,10 +38,10 @@ class Downloader:
             os.remove(i+".aria2")
             if i[:-12] != "(Instrument)":
                 index = trdict["filename"].index(i)
-                requests(trdict["urls"][index][0],i)
+                addUri(trdict["urls"][index][0],i)
             else:
                 index = trdict["filename"][:-12].index(i)
-                requests(trdict["urls"][index][1],i)
+                addUri(trdict["urls"][index][1],i)
     def tellActive(self):
         jsonrpc = {
             "jsonrpc": "2.0",

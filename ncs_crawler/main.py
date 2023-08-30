@@ -50,8 +50,8 @@ def main():
         "-d",
         "--destination",
         type=str,
-        default=os.getcwd()+"/Download/",
-        help="aria download destination, ./Download/ as default",
+        default=os.getcwd()+"/../Download/",
+        help="aria download destination, ../Download/ as default",
     )         
     
     args = parser.parse_args()
@@ -65,8 +65,9 @@ def main():
         Downloader = Downloader(args)
         index = 0
         while index<len(trdict["urls"]):
-            Downloader.request(trdict["urls"][index],args.destination,trdict["filename"][index])
+            Downloader.addUri(trdict["urls"][index],trdict["filename"][index])
             index += 1
+        Downloader.redownload(trdict=trdict)
             
             
 

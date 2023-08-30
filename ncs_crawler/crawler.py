@@ -10,12 +10,17 @@ MAIN_PAGE_URL = "https://ncs.io/music-search?q=&genre=&page="
 class Crawler:
     def __init__(self, args):
         self.args = args
+
     def saveFile(self,trdict):
-        json.dump(trdict,fp=open(self.args.destination+self.args.output,"w+"))
+        outjson = self.args.destination+self.args.output
+        with open(outjson,mode='w',encoding='utf-8') as file:
+            json.dump(trdict,fp=file)
+            file.close()
+
     def run(self):
         pages = 1
         trdict = {"filename":[],"genres":[],"moods":[],"urls":[]}        
-        while pages<self.args.end:
+        while pages<=self.args.end:
             req = requests.get(MAIN_PAGE_URL+str(pages)).content
             soup = BeautifulSoup(req,"lxml")
             alltrs = soup.find_all("tr")
