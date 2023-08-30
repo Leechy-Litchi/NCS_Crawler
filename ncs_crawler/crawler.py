@@ -44,7 +44,7 @@ class Crawler:
                             case 5:
                                 moods = []
                                 for tags in tds.find_all("a"):
-                                    if len(trdict["genres"])<trcounts-1:
+                                    if len(trdict["genres"])<(trcounts-1)*pages:
                                         trdict["genres"].append(tags.text)
                                     else:
                                         moods.append(tags.text)
@@ -61,7 +61,7 @@ class Crawler:
                                 else:
                                     trdict["urls"].append(["https://ncs.io/track/download/"+a])
                     trcounts += 1   
-            print("Loading Pages:"+pages)  
+            print("Loading Pages:"+str(pages))  
 
     def run(self):
         pages = 1     

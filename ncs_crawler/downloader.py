@@ -23,33 +23,34 @@ class Downloader:
     
     def makeLinks(self,trdict):
         import shutil
-        index = 0
         for genre in trdict["genres"]:
             try:
                 os.mkdir(self.destination+genre)
             except FileExistsError:
                 pass
+        index = 0
+        for filename in trdict["filename"]:
             firstmood = trdict["moods"][index][0]
-            firstmoodpath = self.destination+genre+"/"+firstmood
+            firstmoodpath = self.destination+trdict["genres"][index]+"/"+firstmood
             if os.path.exists(firstmoodpath)!=True:
                 os.mkdir(firstmoodpath)
             try:
-                shutil.move(self.destination+"/"+trdict["filename"][index]+".mp3",firstmoodpath+"/"+trdict["filename"][index]+".mp3")
-                shutil.move(self.destination+"/"+trdict["filename"][index]+" (Instrument).mp3",firstmoodpath+"/"+trdict["filename"][index]+" (Instrument).mp3")
+                shutil.move(self.destination+"/"+filename+".mp3",firstmoodpath+"/"+filename+".mp3")
+                shutil.move(self.destination+"/"+filename+" (Instrument).mp3",firstmoodpath+"/"+filename+" (Instrument).mp3")
             except FileNotFoundError:
                 pass
             except FileExistsError:
                 pass
             for moods in trdict["moods"][index][1:]:
-                moodpath = self.destination+genre+"/"+moods
+                moodpath = self.destination+trdict["genres"][index]+"/"+moods
                 if os.path.exists(moodpath)!=True:
                     os.mkdir(moodpath)
                 try:
-                    os.symlink(firstmoodpath+"/"+trdict["filename"][index]+".mp3",moodpath+"/"+trdict["filename"][index]+".mp3")
-                    if os.path.exists(firstmoodpath+"/"+trdict["filename"][index]+" (Instrument).mp3"):
-                        os.symlink(firstmoodpath+"/"+trdict["filename"][index]+" (Instrument).mp3",moodpath+"/"+trdict["filename"][index]+" (Instrument).mp3")
+                    os.symlink(firstmoodpath+"/"+filename+".mp3",moodpath+"/"+filename+".mp3")
+                    if os.path.exists(firstmoodpath+"/"+filename+" (Instrument).mp3"):
+                        os.symlink(firstmoodpath+"/"+filename+" (Instrument).mp3",moodpath+"/"+filename+" (Instrument).mp3")
                 except FileExistsError:
-                    pass                
+                    pass                            
             index += 1
 
     def redownload(self,trdict):
