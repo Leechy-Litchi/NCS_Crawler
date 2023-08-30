@@ -30,6 +30,7 @@ def main():
         "-e",
         "--end",
         type=int,
+        default="9999",
         help="set end page",
     )    
     parser.add_argument(
