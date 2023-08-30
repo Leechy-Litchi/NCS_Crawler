@@ -72,7 +72,7 @@ def main():
     Downloader = Downloader(args)
     Downloader.makeLinks(trdict)
 
-    if args.makelinks and os.path.exists(args.makeLinks):
+    if args.makelinks and os.path.exists(args.makelinks):
         Downloader.makeLinks(trdict=trdict)        
     if args.aria2:
         index = 0
