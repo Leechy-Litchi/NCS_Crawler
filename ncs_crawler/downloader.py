@@ -31,7 +31,8 @@ class Downloader:
         index = 0
         for filename in trdict["filename"]:
             if trdict["moods"][index] == []:
-                firstmood = ""
+                shutil.move(self.destination+"/"+filename+".mp3",self.destination+trdict["genres"][index]+"/"+filename+".mp3")
+                continue
             else:
                 firstmood = trdict["moods"][index][0]
             firstmoodpath = self.destination+trdict["genres"][index]+"/"+firstmood
