@@ -23,7 +23,7 @@ class Crawler:
             soup = BeautifulSoup(req,"lxml")
             alltrs = soup.find_all("tr")
             if len(alltrs)==1:
-                break
+                return
             trcounts = 0
             for trs in alltrs:
                 if trcounts < 2:
