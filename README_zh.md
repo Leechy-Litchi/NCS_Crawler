@@ -1,6 +1,8 @@
 
 # NCS爬虫
 
+[简体中文](./README_zh.md) | [English](./README.md)
+
 ## 效果
 
 收集ncs.io网站上的无版权音乐

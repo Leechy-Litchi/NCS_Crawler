@@ -1,6 +1,8 @@
 
 # NCS Crawler
 
+[简体中文](./README_zh.md) | [English]()
+
 ## Features
 
 Collect no copyright sounds on ncs.io
