@@ -44,12 +44,14 @@ class Crawler:
                                 trdict["filename"].append(filename)
                             case 5:
                                 moods = []
-                                for tags in tds.find_all("a"):
-                                    # need to optimize
-                                    if len(trdict["genres"])-20*(pages-1)<trcounts-1:
-                                        trdict["genres"].append(tags.text.replace("/","／"))
-                                    else:
-                                        moods.append(tags.text)
+                                tags = tds.find_all("a")
+                                if "genre" in tags[0]["href"]:
+                                    trdict["genres"].append(tags[0].text.replace("/","／"))
+                                else:
+                                    trdict["genres"].append("")
+                                for tag in tags:
+                                    if "mood" in tag["href"]:
+                                        moods.append(tag.text)
                                 trdict["moods"].append(moods)
                             # TODO: 6 compare update time
 
