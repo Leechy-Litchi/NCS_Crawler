@@ -43,10 +43,10 @@ class Downloader:
             if os.path.exists(firstmoodpath)!=True:
                 os.mkdir(firstmoodpath)
             try:
-                shutil.move(self.destination+"/"+filename+".mp3",firstmoodpath+"/"+filename+".mp3")
-                shutil.move(self.destination+"/"+filename+" (Instrument).mp3",firstmoodpath+"/"+filename+" (Instrument).mp3")
-            except FileNotFoundError:
-                pass
+                if os.path.exists(self.destination+"/"+filename+".mp3"):
+                    shutil.move(self.destination+"/"+filename+".mp3",firstmoodpath+"/"+filename+".mp3")
+                if os.path.exists(self.destination+"/"+filename+" (Instrument).mp3"):
+                    shutil.move(self.destination+"/"+filename+" (Instrument).mp3",firstmoodpath+"/"+filename+" (Instrument).mp3")
             except FileExistsError:
                 pass
             for moods in trdict["moods"][index][1:]:
@@ -54,7 +54,8 @@ class Downloader:
                 if os.path.exists(moodpath)!=True:
                     os.mkdir(moodpath)
                 try:
-                    os.symlink(firstmoodpath+"/"+filename+".mp3",moodpath+"/"+filename+".mp3")
+                    if os.path.exists(firstmoodpath+"/"+filename+".mp3"):
+                        os.symlink(firstmoodpath+"/"+filename+".mp3",moodpath+"/"+filename+".mp3")
                     if os.path.exists(firstmoodpath+"/"+filename+" (Instrument).mp3"):
                         os.symlink(firstmoodpath+"/"+filename+" (Instrument).mp3",moodpath+"/"+filename+" (Instrument).mp3")
                 except FileExistsError:
@@ -74,14 +75,16 @@ class Downloader:
                     # files.index(file)
                     redownloadFiles.append(filesplit[0])
         for i in redownloadFiles:
-            os.remove(i+".mp3")
-            os.remove(i+".aria2")
-            if i[:-12] != "(Instrument)":
-                index = trdict["filename"].index(i)
-                addUri(trdict["urls"][index][0],i)
+            if os.path.exists(self.destination+"/"+i):
+                os.remove(self.destination+"/"+i)
+            if os.path.exists(self.destination+"/"+i+".aria2"):
+                os.remove(self.destination+"/"+i+".aria2")
+            if i[:-16] != "(Instrument).mp3":
+                index = trdict["filename"].index(i[:-4])
+                self.addUri(trdict["urls"][index][0],i[:-4])
             else:
-                index = trdict["filename"][:-12].index(i)
-                addUri(trdict["urls"][index][1],i)
+                index = trdict["filename"][:-16].index(i[:-4])
+                self.addUri(trdict["urls"][index][1],i[:-4])
         self.makeLinks(trdict)
 
     def tellActive(self):

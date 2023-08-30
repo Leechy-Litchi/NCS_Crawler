@@ -67,7 +67,6 @@ def main():
     from crawler import Crawler
     import json
     trdict = Crawler(args).run()
-
     from downloader import Downloader
     Downloader = Downloader(args)
 
