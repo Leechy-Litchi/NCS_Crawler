@@ -65,10 +65,9 @@ def main():
     args = parser.parse_args()
 
     from crawler import Crawler
-    import time
-    import random
+    import json
     trdict = Crawler(args).run()
-    if args.makelinks:
+    if args.makelinks ** os.path.exists(atgs.makeLinks):
         from downloader import Downloader
         Downloader = Downloader(args)
         Downloader.makeLinks(trdict=trdict)        
