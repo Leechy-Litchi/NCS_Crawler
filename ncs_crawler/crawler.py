@@ -45,7 +45,8 @@ class Crawler:
                             case 5:
                                 moods = []
                                 for tags in tds.find_all("a"):
-                                    if len(trdict["genres"])<(trcounts-1)*pages:
+                                    # need to optimize
+                                    if len(trdict["genres"])-20*(pages-1)<trcounts-1:
                                         trdict["genres"].append(tags.text.replace("/","／"))
                                     else:
                                         moods.append(tags.text)
