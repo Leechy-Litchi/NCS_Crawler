@@ -3,6 +3,7 @@ import os
 from bs4 import BeautifulSoup
 import requests
 import json
+import threading
 
 
 MAIN_PAGE_URL = "https://ncs.io/music-search?q=&genre=&page="
@@ -17,10 +18,7 @@ class Crawler:
             json.dump(trdict,fp=file)
             file.close()
 
-    def run(self):
-        pages = 1
-        trdict = {"filename":[],"genres":[],"moods":[],"urls":[]}        
-        while pages<=self.args.end:
+    def crawl(self,pages,trdict):
             req = requests.get(MAIN_PAGE_URL+str(pages)).content
             soup = BeautifulSoup(req,"lxml")
             alltrs = soup.find_all("tr")
@@ -41,7 +39,7 @@ class Crawler:
                         match tdcounts:
                             case 4:
                                 filename = tds.find("span").text+" - "+tds.find("p").text
-                                filename = filename.replace(",","&")
+                                filename = filename.replace(","," &")
                                 trdict["filename"].append(filename)
                             case 5:
                                 moods = []
@@ -63,7 +61,14 @@ class Crawler:
                                 else:
                                     trdict["urls"].append(["https://ncs.io/track/download/"+a])
                     trcounts += 1   
-            pages += 1                   
+            print("Loading Pages:"+pages)  
+
+    def run(self):
+        pages = 1     
+        trdict = {"filename":[],"genres":[],"moods":[],"urls":[]}   
+        while pages<=self.args.end:
+            self.crawl(pages,trdict)
+            pages += 1                 
         self.saveFile(trdict) 
         return trdict
         
