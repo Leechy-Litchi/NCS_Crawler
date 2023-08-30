@@ -44,8 +44,8 @@ make soft links by json file, ../Download/out.json as default
 python main.py -a -p yourpassword -r https://remotearia2.xyz:6900/jsonrpc -e 4 -o test.json
 ```
 
-[FoldersAndJSON](./Pics/FoldersAndJSON.png)
+![FoldersAndJSON](./Pics/FoldersAndJSON.png)
 
-[MoodsFolders](./Pics/MoodsFolders.png)
+![MoodsFolders](./Pics/MoodsFolders.png)
 
-[SoftLinks](./Pics/SoftLinks.png)
+![SoftLinks](./Pics/SoftLinks.png)
