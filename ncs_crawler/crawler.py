@@ -23,7 +23,7 @@ class Crawler:
             soup = BeautifulSoup(req,"lxml")
             alltrs = soup.find_all("tr")
             if len(alltrs)==1:
-                return
+                return False
             trcounts = 0
             for trs in alltrs:
                 if trcounts < 2:
@@ -62,13 +62,16 @@ class Crawler:
                                     trdict["urls"].append(["https://ncs.io/track/download/"+a])
                     trcounts += 1   
             print("Loading Pages:"+str(pages))  
+            return True
 
     def run(self):
         pages = 1     
         trdict = {"filename":[],"genres":[],"moods":[],"urls":[]}   
         while pages<=self.args.end:
-            self.crawl(pages,trdict)
-            pages += 1                 
+            if self.crawl(pages,trdict):
+                pages += 1                 
+            else:
+                break
         self.saveFile(trdict) 
         return trdict
         
