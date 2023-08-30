@@ -55,9 +55,9 @@ class Downloader:
                     os.mkdir(moodpath)
                 try:
                     if os.path.exists(firstmoodpath+"/"+filename+".mp3"):
-                        os.symlink(firstmoodpath+"/"+filename+".mp3",moodpath+"/"+filename+".mp3")
+                        os.symlink("../"+trdict["moods"][index][0]+"/"+filename+".mp3",moodpath+"/"+filename+".mp3")
                     if os.path.exists(firstmoodpath+"/"+filename+" (Instrument).mp3"):
-                        os.symlink(firstmoodpath+"/"+filename+" (Instrument).mp3",moodpath+"/"+filename+" (Instrument).mp3")
+                        os.symlink("../"+trdict["moods"][index][0]+"/"+filename+" (Instrument).mp3",moodpath+"/"+filename+" (Instrument).mp3")
                 except FileExistsError:
                     pass                            
             index += 1

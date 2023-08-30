@@ -61,17 +61,33 @@ def main():
         default=os.getcwd()+"/../Download/out.json",
         help="make soft links by json file, ../Download/out.json as default",
     )      
+    parser.add_argument(
+        "-i",
+        "--input",
+        type=str,
+        default=os.getcwd()+"/../input.json",
+        help="input json file to download, ../input.json as default",
+    )          
     
     args = parser.parse_args()
 
     from crawler import Crawler
     import json
-    trdict = Crawler(args).run()
+
     from downloader import Downloader
     Downloader = Downloader(args)
 
     if args.makelinks and os.path.exists(args.makelinks):
-        Downloader.makeLinks(trdict=trdict)        
+        trdict = json.load(open(args.makelinks))
+        Downloader.makeLinks(trdict=trdict)
+        return        
+        
+    if os.path.exists(args.input):
+        trdict = json.load(open(args.input))
+    else:
+        trdict = Crawler(args).run()
+
+
     if args.aria2:
         index = 0
         while index<len(trdict["urls"]):

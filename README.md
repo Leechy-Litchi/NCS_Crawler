@@ -36,6 +36,9 @@ aria download destination, ../Download/ as default
 
 -m, --makelinks
 make soft links by json file, ../Download/out.json as default
+
+-i, --input
+input json file to download, ../input.json as default
 ``` 
 
 ## Example
