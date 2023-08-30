@@ -40,12 +40,13 @@ class Crawler:
                             case 4:
                                 filename = tds.find("span").text+" - "+tds.find("p").text
                                 filename = filename.replace(","," &")
+                                filename = filename.replace("/","／")
                                 trdict["filename"].append(filename)
                             case 5:
                                 moods = []
                                 for tags in tds.find_all("a"):
                                     if len(trdict["genres"])<(trcounts-1)*pages:
-                                        trdict["genres"].append(tags.text.replace("/"," "))
+                                        trdict["genres"].append(tags.text.replace("/","／"))
                                     else:
                                         moods.append(tags.text)
                                 trdict["moods"].append(moods)
