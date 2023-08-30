@@ -30,7 +30,10 @@ class Downloader:
                 pass
         index = 0
         for filename in trdict["filename"]:
-            firstmood = trdict["moods"][index][0]
+            if trdict["moods"][index] == []:
+                firstmood = ""
+            else:
+                firstmood = trdict["moods"][index][0]
             firstmoodpath = self.destination+trdict["genres"][index]+"/"+firstmood
             if os.path.exists(firstmoodpath)!=True:
                 os.mkdir(firstmoodpath)
