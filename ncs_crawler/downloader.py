@@ -1,5 +1,7 @@
 import json
 import requests
+import os
+
 
 class Downloader:
     def __init__(self, args):
@@ -18,10 +20,40 @@ class Downloader:
         requests.post(url=self.rpc,data=json.dumps(jsonrpc))  
         if len(url)>1:
             self.addUri([url[1]],filename+" (Instrument)") 
+    
+    def makeLinks(self,trdict):
+        import shutil
+        index = 0
+        for genre in trdict["genres"]:
+            try:
+                os.mkdir(self.destination+genre)
+            except FileExistsError:
+                pass
+            firstmood = trdict["moods"][index][0]
+            firstmoodpath = self.destination+genre+"/"+firstmood
+            if os.path.exists(firstmoodpath)!=True:
+                os.mkdir(firstmoodpath)
+            try:
+                shutil.move(self.destination+"/"+trdict["filename"][index]+".mp3",firstmoodpath+"/"+trdict["filename"][index]+".mp3")
+                shutil.move(self.destination+"/"+trdict["filename"][index]+" (Instrument).mp3",firstmoodpath+"/"+trdict["filename"][index]+" (Instrument).mp3")
+            except FileNotFoundError:
+                pass
+            except FileExistsError:
+                pass
+            for moods in trdict["moods"][index][1:]:
+                moodpath = self.destination+genre+"/"+moods
+                if os.path.exists(moodpath)!=True:
+                    os.mkdir(moodpath)
+                try:
+                    os.symlink(firstmoodpath+"/"+trdict["filename"][index]+".mp3",moodpath+"/"+trdict["filename"][index]+".mp3")
+                    if os.path.exists(firstmoodpath+"/"+trdict["filename"][index]+" (Instrument).mp3"):
+                        os.symlink(firstmoodpath+"/"+trdict["filename"][index]+" (Instrument).mp3",moodpath+"/"+trdict["filename"][index]+" (Instrument).mp3")
+                except FileExistsError:
+                    pass                
+            index += 1
 
     def redownload(self,trdict):
         import time
-        import os
         while self.tellActive()!=0:
             time.sleep(1)
         files = os.listdir(self.destination)
@@ -32,7 +64,6 @@ class Downloader:
                 if filesplit[-1] == ".aria2":
                     # files.index(file)
                     redownloadFiles.append(filesplit[0])
-        print(redownloadFiles)
         for i in redownloadFiles:
             os.remove(i+".mp3")
             os.remove(i+".aria2")
@@ -42,6 +73,8 @@ class Downloader:
             else:
                 index = trdict["filename"][:-12].index(i)
                 addUri(trdict["urls"][index][1],i)
+        self.makeLinks(trdict)
+
     def tellActive(self):
         jsonrpc = {
             "jsonrpc": "2.0",
@@ -49,5 +82,6 @@ class Downloader:
             "id": "",
             "params": ["token:"+self.password]
         }    
-        response = requests.post(url=self.rpc,data=json.dumps(jsonrpc))          
+        response = requests.post(url=self.rpc,data=json.dumps(jsonrpc))    
         return len(json.loads(response.content)["result"])
+    

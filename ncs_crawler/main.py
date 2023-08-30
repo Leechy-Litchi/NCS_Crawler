@@ -18,7 +18,7 @@ def main():
         "--output",
         type=str,
         default="out.json",
-        help="save urls as a file, out.json as default",
+        help="save urls as a file, ../Download/out.json as default",
     )
     parser.add_argument(
         "-a",
@@ -52,7 +52,14 @@ def main():
         type=str,
         default=os.getcwd()+"/../Download/",
         help="aria download destination, ../Download/ as default",
-    )         
+    )        
+    parser.add_argument(
+        "-m",
+        "--makelinks",
+        type=str,
+        default=os.getcwd()+"/../Download/out.json",
+        help="make soft links by json file, ../Download/out.json as default",
+    )      
     
     args = parser.parse_args()
 
@@ -60,6 +67,10 @@ def main():
     import time
     import random
     trdict = Crawler(args).run()
+    if args.makelinks:
+        from downloader import Downloader
+        Downloader = Downloader(args)
+        Downloader.makeLinks(trdict=trdict)        
     if args.aria2:
         from downloader import Downloader
         Downloader = Downloader(args)
