@@ -11,11 +11,11 @@ class Crawler:
     def __init__(self, args):
         self.args = args
     def saveFile(self,trdict):
-        json.dump(trdict,fp=open(self.args.dest+self.args.output,"w+"))
+        json.dump(trdict,fp=open(self.args.destination+self.args.output,"w+"))
     def run(self):
         pages = 1
         trdict = {"filename":[],"genres":[],"moods":[],"urls":[]}        
-        while 1:
+        while pages<self.args.end:
             req = requests.get(MAIN_PAGE_URL+str(pages)).content
             soup = BeautifulSoup(req,"lxml")
             alltrs = soup.find_all("tr")

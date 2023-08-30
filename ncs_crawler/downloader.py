@@ -6,25 +6,25 @@ class Downloader:
         self.rpc = args.rpc
         self.headers = {'Content-Type': 'application/json'}
         self.password = args.password
-        self.dest = args.destination
+        self.destination = args.destination
 
     def addUri(self,url,filename):
         jsonrpc = {
             "jsonrpc": "2.0",
             "method": "aria2.addUri",
             "id": "",
-            "params": ["token:"+self.password, [url[0]], {'dir':self.dest,'out':filename+".mp3"}]
+            "params": ["token:"+self.password, [url[0]], {'dir':self.destination,'out':filename+".mp3"}]
         }    
         requests.post(url=self.rpc,data=json.dumps(jsonrpc))  
         if len(url)>1:
-            self.addUri([url[1]],self.dest,filename+" (Instrument)") 
+            self.addUri([url[1]],self.destination,filename+" (Instrument)") 
 
     def redownload(self,trdict):
         import time
         import os
         while self.tellActive()!=0:
             time.sleep(1)
-        files = os.listdir(self.dest)
+        files = os.listdir(self.destination)
         redownloadFiles = []
         for file in files:
             # if os.path.isdir(file):

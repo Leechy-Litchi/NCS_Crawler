@@ -27,6 +27,12 @@ def main():
         action=argparse.BooleanOptionalAction,
     )
     parser.add_argument(
+        "-e",
+        "--end",
+        type=int,
+        help="end page",
+    )    
+    parser.add_argument(
         "-r",
         "--rpc",
         type=str,
