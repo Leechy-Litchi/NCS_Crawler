@@ -45,7 +45,10 @@ class Crawler:
                                 moods = []
                                 for tags in tds.find_all("a"):
                                     if len(trdict["genres"])<(trcounts-1)*pages:
-                                        trdict["genres"].append(tags.text)
+                                        if tags.text == "N/A":
+                                            trdict["genres"].append("NA")
+                                        else:
+                                            trdict["genres"].append(tags.text)
                                     else:
                                         moods.append(tags.text)
                                 trdict["moods"].append(moods)
